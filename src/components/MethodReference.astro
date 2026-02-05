@@ -1,0 +1,200 @@
+---
+import DocMethod from "./DocMethod.astro";
+import GenericExplainer from "./GenericExplainer.astro";
+---
+
+<div class="space-y-32">
+  <GenericExplainer />
+
+  <section
+    class="p-8 rounded-2xl bg-purple-500/3 border border-purple-500/10 mb-20"
+  >
+    <div class="flex items-center gap-3 mb-6">
+      <div class="p-2 bg-purple-500/20 rounded-lg">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          class="text-purple-400"
+          ><path
+            d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+          ></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"
+          ></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg
+        >
+      </div>
+      <div>
+        <h3 class="text-xl font-bold text-white">Anatomy of a Response</h3>
+        <p class="text-xs text-purple-100/30 uppercase tracking-widest mt-1">
+          What Venus returns
+        </p>
+      </div>
+    </div>
+
+    <p class="text-sm text-purple-100/40 mb-8 leading-relaxed">
+      Every method in Venus returns a consistent object. You don't need <code
+        >try/catch</code
+      > blocks; simply check the <code>ok</code> flag to drive your UI logic.
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div
+        class="p-4 rounded-xl bg-black/40 border border-white/5 hover:border-purple-500/20 transition-colors group"
+      >
+        <code class="text-purple-300 font-bold block mb-1">data: T | null</code>
+        <p class="text-[11px] text-purple-100/30 italic">
+          Typed payload from server. Parsed from JSON.
+        </p>
+      </div>
+      <div
+        class="p-4 rounded-xl bg-black/40 border border-white/5 hover:border-purple-500/20 transition-colors group"
+      >
+        <code class="text-green-400 font-bold block mb-1">ok: boolean</code>
+        <p class="text-[11px] text-purple-100/30 italic">
+          True if status is 2xx. Safety switch for UI.
+        </p>
+      </div>
+      <div
+        class="p-4 rounded-xl bg-black/40 border border-white/5 hover:border-purple-500/20 transition-colors group"
+      >
+        <code class="text-blue-400 font-bold block mb-1">status: number</code>
+        <p class="text-[11px] text-purple-100/30 italic">
+          HTTP code. Normalizes timeouts to 408.
+        </p>
+      </div>
+      <div
+        class="p-4 rounded-xl bg-black/40 border border-white/5 hover:border-purple-500/20 transition-colors group"
+      >
+        <code class="text-red-400 font-bold block mb-1"
+          >error: string | null</code
+        >
+        <p class="text-[11px] text-purple-100/30 italic">
+          Human-readable server error message.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <DocMethod
+    id="get"
+    method="GET"
+    color="bg-blue-500/10 text-blue-400 border-blue-500/20"
+    syntax="get<T>(path, headers?, timeout?)"
+    description="The standard for fetching data. Venus injects an AbortController logic by default. If your API is hanging, Venus will kill the connection at the specified timeout (default 8s) and return a 408 status."
+    status="200 OK"
+  >
+    <div slot="code" class="font-mono text-xs leading-relaxed">
+      <span class="text-purple-400 italic">const</span>
+      <span class="text-purple-200"
+        >{}
+        <span class="text-purple-100">data, ok, error</span>
+        <span class="text-purple-200"></span></span
+      >
+      <span class="text-white">=</span>
+      <span class="text-purple-300 italic">await</span>
+      <span class="text-blue-300 italic font-bold">get</span>&lt;<span
+        class="text-blue-200">User</span
+      >&gt;(<span class="text-green-300">'/me'</span>);<br /><br />
+      <span class="text-purple-400 italic">if</span> (<span class="text-white"
+        >!ok</span
+      >) <span class="text-purple-400 italic">return</span>
+      <span class="text-blue-300">handleError</span>(<span
+        class="text-purple-100">error</span
+      >);<br />
+      <span class="text-white">console.</span><span class="text-blue-300 italic"
+        >log</span
+      >(<span class="text-purple-100">data.name</span>);
+    </div>
+  </DocMethod>
+
+  <DocMethod
+    id="send"
+    method="POST"
+    color="bg-green-500/10 text-green-400 border-green-500/20"
+    syntax="send<T>(path, body, headers?)"
+    description="Designed for creating resources. It automatically stringifies JS objects and sets 'application/json' headers. Prevents 'empty-body' requests from firing, saving server resources."
+    status="201 Created"
+  >
+    <div slot="code" class="font-mono text-xs leading-relaxed">
+      <span class="text-purple-400 italic">const</span>
+      <span class="text-purple-100">payload</span>
+      <span class="text-white">=</span>
+      <span class="text-purple-200"
+        >{}
+        <span class="text-purple-100">title:</span>
+        <span class="text-green-300">'New Post'</span>
+        <span class="text-purple-200"></span></span
+      >;<br />
+      <span class="text-purple-400 italic">const</span>
+      <span class="text-purple-200"
+        >{}
+        <span class="text-purple-100">status, error</span>
+        <span class="text-purple-200"></span></span
+      >
+      <span class="text-white">=</span>
+      <span class="text-purple-300 italic">await</span>
+      <span class="text-blue-300 italic font-bold">send</span>(<span
+        class="text-green-300">'/posts'</span
+      >, <span class="text-purple-100">payload</span>);<br /><br />
+      <span class="text-purple-400 italic">if</span> (<span
+        class="text-purple-100">status</span
+      > === <span class="text-orange-300">201</span>) <span
+        class="text-blue-300">notify</span
+      >(<span class="text-green-300">'Success!'</span>);<br />
+      <span class="text-purple-400 italic">else</span>
+      <span class="text-blue-300">alert</span>(<span class="text-purple-100"
+        >error</span
+      >);
+    </div>
+  </DocMethod>
+
+  <DocMethod
+    id="update"
+    method="PUT / PATCH"
+    color="bg-orange-500/10 text-orange-400 border-orange-500/20"
+    syntax="update<T>(path, body, headers?)"
+    description="Update logic is split into 'update' (PUT) for full replacement, and 'updateOnly' (PATCH) for partial modifications. Both catch server-side validation messages automatically."
+    status="200 OK"
+  >
+    <div slot="code" class="font-mono text-xs leading-relaxed">
+      <span class="text-purple-300 italic">await</span>
+      <span class="text-blue-300 italic font-bold">updateOnly</span>(<span
+        class="text-green-300">'/users/1'</span
+      >, <span class="text-purple-200"
+        >{}
+        <span class="text-purple-100">active:</span>
+        <span class="text-orange-300">false</span>
+        <span class="text-purple-200"></span></span
+      >);
+    </div>
+  </DocMethod>
+
+  <DocMethod
+    id="remove"
+    method="DELETE"
+    color="bg-red-500/10 text-red-400 border-red-500/20"
+    syntax="remove<T>(path, headers?)"
+    description="Solves the 'Empty JSON' parse error. Many APIs return 204 No Content on a successful delete. Standard fetch fails trying to parse that body; Venus resolves it cleanly."
+    status="204 No Content"
+  >
+    <div slot="code" class="font-mono text-xs leading-relaxed">
+      <span class="text-purple-400 italic">const</span>
+      <span class="text-purple-200"
+        >{}
+        <span class="text-purple-100">ok</span>
+        <span class="text-purple-200"></span></span
+      >
+      <span class="text-white">=</span>
+      <span class="text-purple-300 italic">await</span>
+      <span class="text-blue-300 italic font-bold">remove</span>(<span
+        class="text-green-300">'/id/10'</span
+      >);<br />
+      <span class="text-purple-400 italic">if</span> (<span
+        class="text-purple-100">ok</span
+      >) <span class="text-blue-300">refreshTable</span>();
+    </div>
+  </DocMethod>
+</div>

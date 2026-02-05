@@ -1,0 +1,69 @@
+<section class="section-container">
+  <div class="venus-card overflow-hidden border-purple-500/10">
+    <div class="bg-white/5 px-6 py-4 border-b border-white/5">
+      <h3 class="text-sm font-bold uppercase tracking-widest text-purple-200">
+        API Reference
+      </h3>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-sm">
+        <thead class="text-purple-100/20 uppercase text-[10px] font-bold">
+          <tr>
+            <th class="px-6 py-4">Method</th>
+            <th class="px-6 py-4">Function</th>
+            <th class="px-6 py-4">Effect</th>
+          </tr>
+        </thead>
+        <tbody
+          class="divide-y divide-white/5 text-purple-100/60 font-mono text-xs"
+        >
+          <tr class="hover:bg-white/2 transition-colors">
+            <td class="px-6 py-4 text-purple-300 font-bold">get</td>
+            <td class="px-6 py-4 text-purple-100/80"
+              >get&lt;T&gt;(path, headers?, timeout?)</td
+            >
+            <td class="px-6 py-4 italic text-purple-100/40"
+              >Fetch resources (GET)</td
+            >
+          </tr>
+          <tr class="hover:bg-white/2 transition-colors">
+            <td class="px-6 py-4 text-purple-300 font-bold">send</td>
+            <td class="px-6 py-4 text-purple-100/80"
+              >send&lt;T&gt;(path, body, headers?)</td
+            >
+            <td class="px-6 py-4 italic text-purple-100/40"
+              >Create resources (POST)</td
+            >
+          </tr>
+          <tr class="hover:bg-white/2 transition-colors">
+            <td class="px-6 py-4 text-purple-300 font-bold">update</td>
+            <td class="px-6 py-4 text-purple-100/80"
+              >update&lt;T&gt;(path, body, headers?)</td
+            >
+            <td class="px-6 py-4 italic text-purple-100/40"
+              >Replace entire resource (PUT)</td
+            >
+          </tr>
+          <tr class="hover:bg-white/2 transition-colors">
+            <td class="px-6 py-4 text-purple-300 font-bold">updateOnly</td>
+            <td class="px-6 py-4 text-purple-100/80"
+              >updateOnly&lt;T&gt;(path, body, headers?)</td
+            >
+            <td class="px-6 py-4 italic text-purple-100/40"
+              >Partial update (PATCH)</td
+            >
+          </tr>
+          <tr class="hover:bg-white/2 transition-colors">
+            <td class="px-6 py-4 text-purple-300 font-bold">remove</td>
+            <td class="px-6 py-4 text-purple-100/80"
+              >remove&lt;T&gt;(path, headers?)</td
+            >
+            <td class="px-6 py-4 italic text-purple-100/40"
+              >Delete resources (DELETE)</td
+            >
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
