@@ -6,24 +6,49 @@ import Footer from "../components/Footer.astro";
 interface Props {
   title?: string;
   description?: string;
+  image?: string;
 }
 
 const {
   title = "Venus | Networking without friction",
-  description = "A modern, lightweight networking library for JS/TS.",
+  description = "A modern, lightweight, type-safe networking library for JS/TS. Stop fighting fetch.",
+  image = "/og-image.png", // Crea una imagen de 1200x630 para cuando compartas el link
 } = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="generator" content={Astro.generator} />
 
     <title>{title}</title>
+    <meta name="title" content={title} />
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    <meta
+      name="keywords"
+      content="venus, networking, library, javascript, typescript, fetch, api, restful, graphql"
+    />
+    <meta name="author" content="Braydev" />
+    <meta name="robots" content="index, follow" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(image, Astro.url)} />
+
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={Astro.url} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={new URL(image, Astro.url)} />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -32,7 +57,9 @@ const {
       rel="stylesheet"
     />
   </head>
-  <body class="bg-[#030005] antialiased selection:bg-purple-500/30">
+  <body
+    class="bg-[#030005] antialiased selection:bg-purple-500/30 overflow-x-hidden"
+  >
     <Header />
 
     <main class="min-h-screen">
