@@ -2,6 +2,52 @@
 import Layout from "../layouts/Layout.astro";
 import QuickStart from "../components/QuickStart.astro";
 import MethodReference from "../components/MethodReference.astro";
+
+const commonOptionsSnippet = `{
+  headers?: HeadersInit;
+  timeout?: number;
+  signal?: AbortSignal;
+  params?: Record<string, unknown>;
+  paramsArrayFormat?: "repeat" | "comma" | "brackets" | "indices";
+  responseType?: "auto" | "json" | "text" | "blob" | "formData" | "arrayBuffer";
+  retry?: boolean | number | {
+    attempts?: number;
+    backoffMs?: number;
+    maxBackoffMs?: number;
+    retryOn?: number[];
+  };
+  hooks?: {
+    beforeRequest?: (ctx) => void | RequestInit | Promise<void | RequestInit>;
+    afterResponse?: (ctx) => void | Promise<void>;
+  };
+}`;
+
+const rssSnippet = `import { getRss } from "@braydev/venus";
+
+const feed = await getRss("https://example.com/rss.xml", {
+  timeout: 7000,
+  rssMode: "strict",
+});
+
+if (feed.ok) {
+  for (const item of feed.data.items) {
+    console.log(item.title, item.link);
+  }
+}`;
+
+const changelogSnippet = `## 2.0.0
+
+### Added
+- Smart Parsing for JSON and text payloads.
+- responseType support for blob, formData and arrayBuffer.
+- getRss helper with strict and lenient modes.
+
+### Changed
+- Unified options object across all methods.
+- Richer error contract with errorCode and optional status.
+
+### Fixed
+- Better retry behavior for transient failures.`;
 ---
 
 <Layout title="Documentation | Venus SDK">
@@ -60,12 +106,28 @@ import MethodReference from "../components/MethodReference.astro";
                 </a>
               </li>
               <li>
+                <a
+                  href="#getRss"
+                  class="hover:text-purple-200 flex items-center gap-1"
+                >
+                  getRss
+                </a>
+              </li>
+              <li>
                 <a href="#update" class="hover:text-purple-200 text-xs"
                   >update / updateOnly</a
                 >
               </li>
               <li>
                 <a href="#remove" class="hover:text-purple-200">remove</a>
+              </li>
+              <li>
+                <a href="#common-options" class="hover:text-purple-200"
+                  >Common Options</a
+                >
+              </li>
+              <li>
+                <a href="#changelog" class="hover:text-purple-200">Changelog</a>
               </li>
             </ul>
           </div>
@@ -145,6 +207,56 @@ import MethodReference from "../components/MethodReference.astro";
 
           <section id="method-reference" class="scroll-mt-32">
             <MethodReference />
+          </section>
+
+          <section id="common-options" class="scroll-mt-32 mt-24">
+            <h2 class="text-2xl font-bold text-white mb-6">Common Options</h2>
+            <div class="venus-card p-6 bg-[#0D0A11] border-white/10">
+              <pre
+                class="font-mono text-xs text-purple-100/80 overflow-x-auto">{commonOptionsSnippet}</pre>
+            </div>
+          </section>
+
+          <section id="rss" class="scroll-mt-32 mt-24 space-y-6">
+            <h2 class="text-2xl font-bold text-white">RSS and Atom</h2>
+            <p class="text-purple-100/50 leading-relaxed">
+              Venus can consume feeds without manual XML parsing using
+              <code>getRss</code>. Use <code>rssMode: "strict"</code> by default,
+              or <code>"lenient"</code> for custom/non-standard XML feeds.
+            </p>
+            <div class="venus-card p-6 bg-[#0D0A11] border-white/10">
+              <pre
+                class="font-mono text-xs text-purple-100/80 overflow-x-auto">{rssSnippet}</pre>
+            </div>
+          </section>
+
+          <section id="changelog" class="scroll-mt-32 mt-24 space-y-6">
+            <h2 class="text-2xl font-bold text-white">Changelog</h2>
+            <p class="text-purple-100/50 leading-relaxed">
+              Keep one section per version and document <code>Added</code>,
+              <code>Changed</code>, <code>Fixed</code>, and
+              <code>Breaking</code> changes following SemVer.
+            </p>
+            <div class="venus-card p-6 bg-[#0D0A11] border-white/10">
+              <pre
+                class="font-mono text-xs text-purple-100/80 overflow-x-auto">{changelogSnippet}</pre>
+            </div>
+          </section>
+
+          <section id="testing" class="scroll-mt-32 mt-24 space-y-4">
+            <h2 class="text-2xl font-bold text-white">Testing</h2>
+            <p class="text-purple-100/50 leading-relaxed">
+              Venus is fully tested with Vitest.
+            </p>
+            <div class="btn-command py-3 px-5 w-fit">
+              <span class="text-purple-400 font-mono mr-2">$</span>
+              <code class="font-mono text-sm">npm test</code>
+            </div>
+          </section>
+
+          <section id="license" class="scroll-mt-32 mt-24 space-y-4">
+            <h2 class="text-2xl font-bold text-white">License</h2>
+            <p class="text-purple-100/50">MIT &copy; code-braydev</p>
           </section>
         </section>
       </article>

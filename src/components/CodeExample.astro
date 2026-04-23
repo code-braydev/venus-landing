@@ -38,15 +38,14 @@
             <div class="text-purple-100/10 text-right select-none border-r border-white/5 pr-4 hidden sm:block font-mono">
               01<br />02<br />03<br />04<br />05<br />06<br />07
             </div>
-            <div class="whitespace-nowrap font-mono">
-              <span class="text-purple-400 italic">import</span> <span class="text-purple-200">{</span> <span class="text-white">get</span> <span class="text-purple-200">}</span> <span class="text-purple-400 italic">from</span> <span class="text-green-300">'@braydev/venus'</span><span class="text-white">;</span><br />
-              <br />
-              <span class="text-purple-400 italic">const</span> <span class="text-purple-200">{</span> <span class="text-purple-100">data, ok</span> <span class="text-purple-200">}</span> <span class="text-white">=</span> <span class="text-purple-300 italic">await</span> <span class="text-blue-300 italic font-bold">get</span><span class="text-white">(</span><span class="text-green-300">'/posts/1'</span><span class="text-white">);</span><br />
-              <br />
-              <span class="text-purple-400 italic">if</span> <span class="text-white">(ok)</span> <span class="text-purple-200">{</span><br />
-              &nbsp;&nbsp;<span class="text-white">console.</span><span class="text-blue-300 italic">log</span><span class="text-white">(data);</span><br />
-              <span class="text-purple-200">}</span>
-            </div>
+            <pre class="text-purple-300 font-mono">{`import { get } from "@braydev/venus";
+
+const { data, ok } = await get('/posts/1');
+
+if (ok)
+console.log(data);
+
+            `}</pre>
           </div>
         </div>
       </div>

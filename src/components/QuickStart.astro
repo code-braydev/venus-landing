@@ -31,4 +31,43 @@
       >) so it runs before any components are rendered.
     </p>
   </div>
+
+  <div class="space-y-4">
+    <h3 class="text-xl font-bold text-white flex items-center gap-2">
+      <span
+        class="flex h-6 w-6 items-center justify-center rounded-full bg-purple-500/20 text-purple-300 text-xs font-bold"
+        >2</span
+      >
+      First Request (v2.0.0)
+    </h3>
+    <p class="text-sm text-purple-100/40 leading-relaxed">
+      Venus now unifies options across methods and adds smarter parsing for JSON
+      or text/RSS responses.
+    </p>
+
+    <div
+      class="venus-card p-6 bg-[#0D0A11] font-mono text-xs border-purple-500/5 overflow-x-auto"
+    >
+      <p class="text-purple-400 italic mb-2">// src/api/profile.ts</p>
+      <pre
+        class="whitespace-pre text-purple-100/90">{`import { get, getRss, send } from "@braydev/venus";
+
+const profile = await get<User>("/profile", {
+  timeout: 8000,
+  params: { include: ["roles", "permissions"] },
+  paramsArrayFormat: "repeat",
+  responseType: "auto",
+});
+
+const created = await send("/users", { name: "Brayan" }, {
+  retry: { attempts: 2, backoffMs: 200 },
+});
+
+const feed = await getRss("https://hnrss.org/frontpage", {
+  timeout: 8000,
+  retry: true,
+  rssMode: "strict",
+});`}</pre>
+    </div>
+  </div>
 </div>

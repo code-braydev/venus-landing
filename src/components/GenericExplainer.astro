@@ -18,7 +18,7 @@
         <h4
           class="text-sm font-bold text-purple-300 uppercase tracking-widest mb-2"
         >
-          Optional Parameters
+          Unified Options in v2.0.0
         </h4>
         <div class="space-y-3">
           <div
@@ -27,10 +27,11 @@
             <p
               class="text-xs font-bold text-white mb-1 group-hover:text-purple-300"
             >
-              Headers
+              Request Controls
             </p>
             <p class="text-[10px] text-purple-100/30 italic">
-              Auth tokens (Bearer), custom Metadata, or Language preferences.
+              headers, timeout, signal, params and paramsArrayFormat for safe
+              URL query handling.
             </p>
           </div>
           <div
@@ -39,10 +40,11 @@
             <p
               class="text-xs font-bold text-white mb-1 group-hover:text-purple-300"
             >
-              Timeout
+              Parsing + Resilience
             </p>
             <p class="text-[10px] text-purple-100/30 italic">
-              Default: 8s. Prevents hanging requests on slow networks.
+              responseType: auto/json/text/blob/formData/arrayBuffer, retry with
+              backoff, and lifecycle hooks.
             </p>
           </div>
         </div>
@@ -53,20 +55,14 @@
       class="venus-card p-6 bg-[#0D0A11] font-mono text-xs border-purple-500/5 self-center shadow-2xl"
     >
       <p class="text-purple-400 italic mb-4">// Full request implementation</p>
-      <div class="overflow-x-auto whitespace-pre">
-        <span class="text-purple-300">await</span>
-        <span class="text-blue-300 italic font-bold">get</span><span
-          class="text-purple-200">&lt;User&gt;</span
-        >(
-        <span class="text-green-300">"/profile"</span>,
-        <span class="text-purple-200"
-          >{} Authorization: <span class="text-green-300">'Bearer ...'</span>
-          <span class="text-purple-200"></span></span
-        >,
-        <span class="text-orange-300">5000</span>
-        <span class="text-purple-100/20">// 5s timeout</span>
-        );
-      </div>
+      <pre
+        class="overflow-x-auto whitespace-pre text-purple-100/90">{`await get<User>("/profile", {
+  headers: { Authorization: "Bearer ..." },
+  timeout: 5000,
+  params: { include: ["roles"] },
+  responseType: "auto",
+  retry: { attempts: 2, backoffMs: 200 },
+});`}</pre>
     </div>
   </div>
 </div>

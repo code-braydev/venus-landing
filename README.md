@@ -1,46 +1,52 @@
-# Astro Starter Kit: Basics
+# Venus Landing (Astro)
 
-```sh
-npm create astro@latest -- --template basics
+Landing y documentacion oficial de Venus, una libreria moderna y ligera para networking en JavaScript/TypeScript.
+
+## Venus v2.0.0
+
+Novedades principales:
+
+- Smart Parsing: deteccion automatica de JSON o texto (ideal para RSS/XML).
+- Multi-Format Support: soporte para blob, formData y arrayBuffer.
+- Query Params: opcion params para construir query strings de forma segura.
+- Enhanced DX: JSDoc completo para mejor IntelliSense en VS Code.
+- API unificada: options consistentes en get/send/update/updateOnly/remove.
+- Retry configurable con backoff para errores transitorios.
+- Hooks ligeros: beforeRequest y afterResponse.
+- getRss con normalizacion RSS/Atom y modos strict/lenient.
+
+## Scripts
+
+- npm run dev: inicia entorno local.
+- npm run build: genera build de produccion.
+- npm run preview: previsualiza la build.
+
+## Estructura principal
+
+- src/pages/index.astro: landing principal.
+- src/pages/doc.astro: pagina de documentacion.
+- src/components: secciones reutilizables de landing/docs.
+- src/styles/global.css: estilos globales.
+
+## Desarrollo
+
+1. Instalar dependencias:
+
+```bash
+npm install
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+2. Levantar entorno local:
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+```bash
+npm run dev
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+3. Abrir en navegador:
 
-## 🧞 Commands
+`http://localhost:4321`
 
-All commands are run from the root of the project, from a terminal:
+## Referencias
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- GitHub: https://github.com/code-braydev/venus
+- NPM: https://www.npmjs.com/package/@braydev/venus

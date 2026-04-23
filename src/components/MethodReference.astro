@@ -35,18 +35,17 @@ import GenericExplainer from "./GenericExplainer.astro";
     </div>
 
     <p class="text-sm text-purple-100/40 mb-8 leading-relaxed">
-      Every method in Venus returns a consistent object. You don't need <code
-        >try/catch</code
-      > blocks; simply check the <code>ok</code> flag to drive your UI logic.
+      Every method in Venus returns a predictable contract. No try/catch is
+      required for normal control flow; check <code>ok</code> and render from there.
     </p>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
       <div
         class="p-4 rounded-xl bg-black/40 border border-white/5 hover:border-purple-500/20 transition-colors group"
       >
         <code class="text-purple-300 font-bold block mb-1">data: T | null</code>
         <p class="text-[11px] text-purple-100/30 italic">
-          Typed payload from server. Parsed from JSON.
+          Parsed payload from json/text/blob/formData/arrayBuffer.
         </p>
       </div>
       <div
@@ -54,15 +53,15 @@ import GenericExplainer from "./GenericExplainer.astro";
       >
         <code class="text-green-400 font-bold block mb-1">ok: boolean</code>
         <p class="text-[11px] text-purple-100/30 italic">
-          True if status is 2xx. Safety switch for UI.
+          True when request succeeded.
         </p>
       </div>
       <div
         class="p-4 rounded-xl bg-black/40 border border-white/5 hover:border-purple-500/20 transition-colors group"
       >
-        <code class="text-blue-400 font-bold block mb-1">status: number</code>
+        <code class="text-blue-400 font-bold block mb-1">status?: number</code>
         <p class="text-[11px] text-purple-100/30 italic">
-          HTTP code. Normalizes timeouts to 408.
+          HTTP status when available.
         </p>
       </div>
       <div
@@ -72,7 +71,15 @@ import GenericExplainer from "./GenericExplainer.astro";
           >error: string | null</code
         >
         <p class="text-[11px] text-purple-100/30 italic">
-          Human-readable server error message.
+          Human-readable message for logs/UI.
+        </p>
+      </div>
+      <div
+        class="p-4 rounded-xl bg-black/40 border border-white/5 hover:border-purple-500/20 transition-colors group"
+      >
+        <code class="text-orange-400 font-bold block mb-1">errorCode</code>
+        <p class="text-[11px] text-purple-100/30 italic">
+          HTTP_ERROR, TIMEOUT, ABORTED, NETWORK_ERROR and more.
         </p>
       </div>
     </div>
@@ -82,119 +89,90 @@ import GenericExplainer from "./GenericExplainer.astro";
     id="get"
     method="GET"
     color="bg-blue-500/10 text-blue-400 border-blue-500/20"
-    syntax="get<T>(path, headers?, timeout?)"
-    description="The standard for fetching data. Venus injects an AbortController logic by default. If your API is hanging, Venus will kill the connection at the specified timeout (default 8s) and return a 408 status."
+    syntax="get<T>(path, options?)"
+    description="Fetch resources with smart parsing, query params, timeout and retry controls. responseType: auto detects JSON vs text payloads."
     status="200 OK"
   >
-    <div slot="code" class="font-mono text-xs leading-relaxed">
-      <span class="text-purple-400 italic">const</span>
-      <span class="text-purple-200"
-        >{}
-        <span class="text-purple-100">data, ok, error</span>
-        <span class="text-purple-200"></span></span
-      >
-      <span class="text-white">=</span>
-      <span class="text-purple-300 italic">await</span>
-      <span class="text-blue-300 italic font-bold">get</span>&lt;<span
-        class="text-blue-200">User</span
-      >&gt;(<span class="text-green-300">'/me'</span>);<br /><br />
-      <span class="text-purple-400 italic">if</span> (<span class="text-white"
-        >!ok</span
-      >) <span class="text-purple-400 italic">return</span>
-      <span class="text-blue-300">handleError</span>(<span
-        class="text-purple-100">error</span
-      >);<br />
-      <span class="text-white">console.</span><span class="text-blue-300 italic"
-        >log</span
-      >(<span class="text-purple-100">data.name</span>);
-    </div>
+    <pre
+      slot="code"
+      class="font-mono text-xs leading-relaxed text-purple-100/90">{`const { data, ok, errorCode } = await get<User>("/profile", {
+  params: { include: ["roles"] },
+  responseType: "auto",
+  timeout: 8000,
+});
+
+if (!ok) return handleError(errorCode);
+console.log(data?.name);`}</pre>
+  </DocMethod>
+
+  <DocMethod
+    id="getRss"
+    method="GET RSS"
+    color="bg-cyan-500/10 text-cyan-400 border-cyan-500/20"
+    syntax="getRss(path, options?)"
+    description="Fetch and normalize RSS/Atom feeds with strict or lenient modes for non-standard XML sources."
+    status="200 OK"
+  >
+    <pre
+      slot="code"
+      class="font-mono text-xs leading-relaxed text-purple-100/90">{`const feedResult = await getRss("https://hnrss.org/frontpage", {
+  timeout: 8000,
+  retry: true,
+  rssMode: "strict",
+});
+
+if (feedResult.ok) {
+  console.log(feedResult.data.items[0]?.title);
+}`}</pre>
   </DocMethod>
 
   <DocMethod
     id="send"
     method="POST"
     color="bg-green-500/10 text-green-400 border-green-500/20"
-    syntax="send<T>(path, body, headers?)"
-    description="Designed for creating resources. It automatically stringifies JS objects and sets 'application/json' headers. Prevents 'empty-body' requests from firing, saving server resources."
+    syntax="send<T>(path, body, options?)"
+    description="Create resources with retry policy and hooks support for request/response instrumentation."
     status="201 Created"
   >
-    <div slot="code" class="font-mono text-xs leading-relaxed">
-      <span class="text-purple-400 italic">const</span>
-      <span class="text-purple-100">payload</span>
-      <span class="text-white">=</span>
-      <span class="text-purple-200"
-        >{}
-        <span class="text-purple-100">title:</span>
-        <span class="text-green-300">'New Post'</span>
-        <span class="text-purple-200"></span></span
-      >;<br />
-      <span class="text-purple-400 italic">const</span>
-      <span class="text-purple-200"
-        >{}
-        <span class="text-purple-100">status, error</span>
-        <span class="text-purple-200"></span></span
-      >
-      <span class="text-white">=</span>
-      <span class="text-purple-300 italic">await</span>
-      <span class="text-blue-300 italic font-bold">send</span>(<span
-        class="text-green-300">'/posts'</span
-      >, <span class="text-purple-100">payload</span>);<br /><br />
-      <span class="text-purple-400 italic">if</span> (<span
-        class="text-purple-100">status</span
-      > === <span class="text-orange-300">201</span>) <span
-        class="text-blue-300">notify</span
-      >(<span class="text-green-300">'Success!'</span>);<br />
-      <span class="text-purple-400 italic">else</span>
-      <span class="text-blue-300">alert</span>(<span class="text-purple-100"
-        >error</span
-      >);
-    </div>
+    <pre
+      slot="code"
+      class="font-mono text-xs leading-relaxed text-purple-100/90">{`const payload = { name: "Brayan" };
+
+await send("/users", payload, {
+  retry: { attempts: 2, backoffMs: 200 },
+  hooks: {
+    afterResponse: () => console.log("done"),
+  },
+});`}</pre>
   </DocMethod>
 
   <DocMethod
     id="update"
     method="PUT / PATCH"
     color="bg-orange-500/10 text-orange-400 border-orange-500/20"
-    syntax="update<T>(path, body, headers?)"
-    description="Update logic is split into 'update' (PUT) for full replacement, and 'updateOnly' (PATCH) for partial modifications. Both catch server-side validation messages automatically."
+    syntax="update<T>(path, body, options?)"
+    description="Use update for full replacement (PUT) and updateOnly for partial changes (PATCH) with the same options model."
     status="200 OK"
   >
-    <div slot="code" class="font-mono text-xs leading-relaxed">
-      <span class="text-purple-300 italic">await</span>
-      <span class="text-blue-300 italic font-bold">updateOnly</span>(<span
-        class="text-green-300">'/users/1'</span
-      >, <span class="text-purple-200"
-        >{}
-        <span class="text-purple-100">active:</span>
-        <span class="text-orange-300">false</span>
-        <span class="text-purple-200"></span></span
-      >);
-    </div>
+    <pre
+      slot="code"
+      class="font-mono text-xs leading-relaxed text-purple-100/90">{`await updateOnly("/users/1", { active: false }, {
+  timeout: 6000,
+});`}</pre>
   </DocMethod>
 
   <DocMethod
     id="remove"
     method="DELETE"
     color="bg-red-500/10 text-red-400 border-red-500/20"
-    syntax="remove<T>(path, headers?)"
-    description="Solves the 'Empty JSON' parse error. Many APIs return 204 No Content on a successful delete. Standard fetch fails trying to parse that body; Venus resolves it cleanly."
+    syntax="remove<T>(path, options?)"
+    description="Delete resources with 204 handling and the same timeout/retry/hook controls available everywhere."
     status="204 No Content"
   >
-    <div slot="code" class="font-mono text-xs leading-relaxed">
-      <span class="text-purple-400 italic">const</span>
-      <span class="text-purple-200"
-        >{}
-        <span class="text-purple-100">ok</span>
-        <span class="text-purple-200"></span></span
-      >
-      <span class="text-white">=</span>
-      <span class="text-purple-300 italic">await</span>
-      <span class="text-blue-300 italic font-bold">remove</span>(<span
-        class="text-green-300">'/id/10'</span
-      >);<br />
-      <span class="text-purple-400 italic">if</span> (<span
-        class="text-purple-100">ok</span
-      >) <span class="text-blue-300">refreshTable</span>();
-    </div>
+    <pre
+      slot="code"
+      class="font-mono text-xs leading-relaxed text-purple-100/90">{`const { ok, status } = await remove("/id/10", { retry: 1 });
+
+if (ok) refreshTable(status);`}</pre>
   </DocMethod>
 </div>

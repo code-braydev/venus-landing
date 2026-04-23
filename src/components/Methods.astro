@@ -20,25 +20,32 @@
           <tr class="hover:bg-white/2 transition-colors">
             <td class="px-6 py-4 text-purple-300 font-bold">get</td>
             <td class="px-6 py-4 text-purple-100/80"
-              >get&lt;T&gt;(path, headers?, timeout?)</td
+              >get&lt;T&gt;(path, options?)</td
             >
             <td class="px-6 py-4 italic text-purple-100/40"
-              >Fetch resources (GET)</td
+              >Fetch resources with parser/timeout/retry controls</td
+            >
+          </tr>
+          <tr class="hover:bg-white/2 transition-colors">
+            <td class="px-6 py-4 text-purple-300 font-bold">getRss</td>
+            <td class="px-6 py-4 text-purple-100/80">getRss(path, options?)</td>
+            <td class="px-6 py-4 italic text-purple-100/40"
+              >Fetch and normalize RSS/Atom feeds</td
             >
           </tr>
           <tr class="hover:bg-white/2 transition-colors">
             <td class="px-6 py-4 text-purple-300 font-bold">send</td>
             <td class="px-6 py-4 text-purple-100/80"
-              >send&lt;T&gt;(path, body, headers?)</td
+              >send&lt;T&gt;(path, body, options?)</td
             >
             <td class="px-6 py-4 italic text-purple-100/40"
-              >Create resources (POST)</td
+              >Create resources (POST) with retry and hooks</td
             >
           </tr>
           <tr class="hover:bg-white/2 transition-colors">
             <td class="px-6 py-4 text-purple-300 font-bold">update</td>
             <td class="px-6 py-4 text-purple-100/80"
-              >update&lt;T&gt;(path, body, headers?)</td
+              >update&lt;T&gt;(path, body, options?)</td
             >
             <td class="px-6 py-4 italic text-purple-100/40"
               >Replace entire resource (PUT)</td
@@ -47,7 +54,7 @@
           <tr class="hover:bg-white/2 transition-colors">
             <td class="px-6 py-4 text-purple-300 font-bold">updateOnly</td>
             <td class="px-6 py-4 text-purple-100/80"
-              >updateOnly&lt;T&gt;(path, body, headers?)</td
+              >updateOnly&lt;T&gt;(path, body, options?)</td
             >
             <td class="px-6 py-4 italic text-purple-100/40"
               >Partial update (PATCH)</td
@@ -56,7 +63,7 @@
           <tr class="hover:bg-white/2 transition-colors">
             <td class="px-6 py-4 text-purple-300 font-bold">remove</td>
             <td class="px-6 py-4 text-purple-100/80"
-              >remove&lt;T&gt;(path, headers?)</td
+              >remove&lt;T&gt;(path, options?)</td
             >
             <td class="px-6 py-4 italic text-purple-100/40"
               >Delete resources (DELETE)</td
